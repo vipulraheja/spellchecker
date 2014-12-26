@@ -1,0 +1,50 @@
+Spell Checker
+
+Author: Vipul Raheja
+---------------------------------------------------------------------------------------------
+
+There are three major approaches that the algorithm takes:
+1. Handling duplicates:
+	a. For all consecutively repeating characters, that repeat more than twice, 
+		A list of words consisting of just one and two letters of the entire 
+		repeating substring is generated
+		eg. sheeepppp --> shep, shepp, sheep, sheepp
+
+	b. For every character in the word, a list of words with every character 
+		repeating from once to thrice is generated.
+		eg. pit --> pit, ppit, piit, pitt, ppiit, ppitt, ppiitt, piitt ... 
+					pppit, pppiit, pppiiit, pppitt, pppittt, pppiittt .... pppiiittt
+
+2. Handling vowels:
+	a. For all vowels in the word, a set of words with each vowel replaced is generated:
+		eg. foat --> faat, faet, fait, faot, faut, feat, feet, feit, feot, feut ... fuut
+
+	b. For every candidate generated in previous step (2a), another set of candidates with 
+		duplicates is generated from step (1b); i.e. every candidate in step (1a) is passed
+		to step (1b) and generates a new set of candidate words.
+
+		This can lead to a drastic increase in search space and runtime if the length of 
+		word is large and there are a lot of vowels in the word. 
+		eg. foat --> generates 5*5 = 25 candidates 
+			each of the 25 candidates generate 
+
+3. Capitalizations
+	All words are converted to lowercase.
+
+Hence, Step (1b) has been commented. (Lines 45-51)
+It will not work for words like "acount" where a non-vowel edit of greater than 1 is required.
+However, if it is uncommented, it will; but with extra time and space.
+
+--------------------------------------------------------------------------------------------------
+Edit distance based approach (Based on Norvig's implementation of spell checker)
+	Find words within edit distance of 2
+	This is because otherwise, this spell checker focuses solely on vowel changes and duplicates
+	In case a NO_SUGGESTION results for vowels and duplicates, as a last resort before returning
+	NO_SUGGESTION, an edit distance based approach is taken to find the closest match.
+	This will handle a consonant edit (But not duplicates).
+
+This part of the code is commented currently (299-311)
+
+Also, if it is enabled, the Misspell checker will not work correctly - returning NO_SUGGESTIONS 
+--------------------------------------------------------------------------------------------------
+
